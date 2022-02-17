@@ -1,0 +1,31 @@
+{
+  "Users": [
+    {
+      "id": 1,
+      "fullname": "Adhri",
+      "username": "daemon",
+      "email": "adhri.adly@gmail.com",
+      "password": "Password181198",
+      "token": "9812hbdiuhanvhashdas81u2ja8basd72hs",
+      "profile": "https://instagram.fupg6-1.fna.fbcdn.net/v/t51.2885-19/s150x150/123123968_224412309023564_4776412367811041813_n.jpg?_nc_ht=instagram.fupg6-1.fna.fbcdn.net&_nc_cat=108&_nc_ohc=mW92rrIErhIAX92AURH&edm=ALbqBD0BAAAA&ccb=7-4&oh=00_AT9furop1Tm_CEmq0kGmTjr6_W4IsU57XeLES7wH7OtJcQ&oe=6213DA87&_nc_sid=9a90d6"
+    },
+    {
+      "id": 2,
+      "fullname": "Muspita Srihandayani",
+      "username": "phyta_448",
+      "email": "phytaa448@gmail.com",
+      "password": "phytaa_comel",
+      "token": "jkahjksd92812hb319uhbf8823b238u|wehibd",
+      "profile": "https://instagram.fupg6-1.fna.fbcdn.net/v/t51.2885-19/s150x150/273721062_1607075582967484_6604532627585359800_n.jpg?_nc_ht=instagram.fupg6-1.fna.fbcdn.net&_nc_cat=104&_nc_ohc=tx9lWnpwNXgAX_OMsLT&edm=ALCvFkgBAAAA&ccb=7-4&oh=00_AT8voWR_7b3ooDbuVolrRoY7L7A82aCP6zToBa_npxIYwg&oe=62135412&_nc_sid=643ae9"
+    },
+    {
+      "id": 3,
+      "fullname": "Qanita Salsabilah",
+      "username": "nhytaa",
+      "email": "nhyta@gmail.com",
+      "password": "nhytaa123",
+      "token": "asdjasjbdjhasc97729masnbdjahsjhdb8723o",
+      "profile": "https://instagram.fupg6-1.fna.fbcdn.net/v/t51.2885-19/s150x150/273762996_437774244802269_3194216952256554818_n.jpg?_nc_ht=instagram.fupg6-1.fna.fbcdn.net&_nc_cat=109&_nc_ohc=aEhAXhbUr8kAX9mc3rq&edm=ALbqBD0BAAAA&ccb=7-4&oh=00_AT84RKlqoiygtPSyJhaaAJhPBrZIq03irL96rI0xSJFOcg&oe=6214858B&_nc_sid=9a90d6"
+    }
+  ]
+}
