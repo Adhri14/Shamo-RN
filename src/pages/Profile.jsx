@@ -1,10 +1,44 @@
 import {ScrollView, StatusBar, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import HeaderProfile from '../components/HeaderProfile';
 import ListButtonProfile from '../components/ListButtonProfile';
 import Gap from '../components/Gap';
+import {getData, removeValue} from '../utils/localstorage';
+import axios from 'axios';
+import {API} from '../config';
+import showMessage from '../utils/showMessage';
 
 const Profile = ({navigation}) => {
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    getData('userProfile').then(res => {
+      setUser(res.user);
+    });
+  }, []);
+
+  const signOut = () => {
+    getData('token').then(token => {
+      axios
+        .post(
+          `${API.base_url}api/logout`,
+          {},
+          {headers: {Authorization: token.token}},
+        )
+        .then(res => {
+          removeValue('userProfile');
+          removeValue('token');
+          showMessage({message: res.data.meta.message, type: 'success'});
+          setTimeout(() => {
+            navigation.replace('SignIn');
+          }, 2000);
+        })
+        .catch(err => {
+          showMessage({message: err.message});
+        });
+    });
+  };
+
   return (
     <View style={styles.page}>
       <StatusBar
@@ -13,9 +47,9 @@ const Profile = ({navigation}) => {
         barStyle="light-content"
       />
       <HeaderProfile
-        title="Adhri"
-        desc="@daemon_adr"
-        onPress={() => navigation.replace('SignIn')}
+        title={user.name}
+        desc={`@${user.username}`}
+        onPress={signOut}
       />
       <ScrollView
         contentContainerStyle={{flexGrow: 1}}

@@ -15,158 +15,325 @@ import Gap from '../components/Gap';
 import Card from '../components/Card';
 import Category, {titleCategory} from '../components/Category';
 import ItemProduct from '../components/ItemProduct';
-import {useRoute} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import Users from '../model/User.json';
+import {getData} from '../utils/localstorage';
+import axios from 'axios';
+import {API} from '../config';
+import showMessage from '../utils/showMessage';
 
-const AllShoes = ({onPress}) => {
+const AllShoes = ({children}) => {
+  const navigation = useNavigation();
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    getAllShoes();
+  }, []);
+
+  const getAllShoes = () => {
+    setLoading(true);
+    axios
+      .get(`${API.base_url}api/products`)
+      .then(res => {
+        setLoading(false);
+        const array = res.data.data.data;
+        console.log(array);
+        if (Array.isArray(array)) {
+          setData(array);
+        }
+      })
+      .catch(err => {
+        setLoading(false);
+        showMessage({
+          message: err.message,
+        });
+      });
+  };
   return (
     <>
       <Text style={styles.title}>Popular Products</Text>
       <View>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View style={styles.carousel}>
-            <Card
-              img={Shoes1}
-              title="COURT VISION 2.0"
-              category="Hiking"
-              price="$58,67"
-              onPress={onPress}
-            />
-            <Card
-              img={Shoes1}
-              title="TERREX URBAN LOW"
-              category="Hiking"
-              price="$143,98"
-            />
-            <Card
-              img={Shoes3}
-              title="SL 20 SHOES"
-              category="Running"
-              price="$123,82"
-            />
+            {data.map(item => {
+              if (!data) {
+                return <Text>Data is empty</Text>;
+              }
+              return (
+                <Card
+                  key={item.id.toString()}
+                  img={{uri: item.galleries[0].url}}
+                  title={item.name}
+                  category={item.category.name}
+                  price="$58,67"
+                  onPress={() => navigation.navigate('DetailProduct', {item})}
+                />
+              );
+            })}
           </View>
         </ScrollView>
       </View>
       <Gap height={16} />
+
       <Text style={styles.title}>New Arrivals</Text>
       <Gap height={14} />
       <View style={styles.container}>
-        <ItemProduct />
-        <Gap height={30} />
-        <ItemProduct />
-        <Gap height={30} />
-        <ItemProduct />
-        <Gap height={30} />
-        <ItemProduct />
-        <Gap height={30} />
+        {data.map((item, index) => {
+          if (data.length > 0) {
+            if (index + 1 <= 5) {
+              return (
+                <>
+                  <ItemProduct
+                    key={item.id.toString()}
+                    title={item.name}
+                    category={item.category.name}
+                    price={item.price}
+                    image={{uri: item.galleries[0].url}}
+                    onPress={() => navigation.navigate('DetailProduct', {item})}
+                  />
+                  <Gap height={30} />
+                </>
+              );
+            }
+          }
+        })}
       </View>
     </>
   );
 };
 
 const Running = ({onPress}) => {
+  const navigation = useNavigation();
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    getAllShoes();
+  }, []);
+
+  const getAllShoes = () => {
+    setLoading(true);
+    axios
+      .get(`${API.base_url}api/products`)
+      .then(res => {
+        setLoading(false);
+        const array = res.data.data.data;
+        console.log(array);
+        if (Array.isArray(array)) {
+          setData(array);
+        }
+      })
+      .catch(err => {
+        setLoading(false);
+        showMessage({
+          message: err.message,
+        });
+      });
+  };
   return (
     <>
       <Text style={styles.title}>For You</Text>
       <Gap height={14} />
       <View style={styles.container}>
-        <ItemProduct onPress={onPress} />
-        <Gap height={30} />
-        <ItemProduct />
-        <Gap height={30} />
-        <ItemProduct />
-        <Gap height={30} />
-        <ItemProduct />
-        <Gap height={30} />
-        <ItemProduct />
-        <Gap height={30} />
+        {data.map((item, index) => {
+          if (item.categories_id === 5) {
+            return (
+              <>
+                <ItemProduct
+                  key={item.id.toString()}
+                  title={item.name}
+                  category={item.category.name}
+                  price={item.price}
+                  image={{uri: item.galleries[0].url}}
+                  onPress={() => navigation.navigate('DetailProduct', {item})}
+                />
+                <Gap height={30} />
+              </>
+            );
+          }
+        })}
       </View>
     </>
   );
 };
 const Training = ({onPress}) => {
+  const navigation = useNavigation();
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    getAllShoes();
+  }, []);
+
+  const getAllShoes = () => {
+    setLoading(true);
+    axios
+      .get(`${API.base_url}api/products`)
+      .then(res => {
+        setLoading(false);
+        const array = res.data.data.data;
+        console.log(array);
+        if (Array.isArray(array)) {
+          setData(array);
+        }
+      })
+      .catch(err => {
+        setLoading(false);
+        showMessage({
+          message: err.message,
+        });
+      });
+  };
   return (
     <>
       <Text style={styles.title}>For You</Text>
       <Gap height={14} />
       <View style={styles.container}>
-        <ItemProduct onPress={onPress} />
-        <Gap height={30} />
-        <ItemProduct />
-        <Gap height={30} />
-        <ItemProduct />
-        <Gap height={30} />
-        <ItemProduct />
-        <Gap height={30} />
-        <ItemProduct />
-        <Gap height={30} />
+        {data.map((item, index) => {
+          if (item.categories_id === 4) {
+            return (
+              <>
+                <ItemProduct
+                  key={item.id.toString()}
+                  title={item.name}
+                  category={item.category.name}
+                  price={item.price}
+                  image={{uri: item.galleries[0].url}}
+                  onPress={() => navigation.navigate('DetailProduct', {item})}
+                />
+                <Gap height={30} />
+              </>
+            );
+          }
+        })}
       </View>
     </>
   );
 };
 const Basketball = ({onPress}) => {
+  const navigation = useNavigation();
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    getAllShoes();
+  }, []);
+
+  const getAllShoes = () => {
+    setLoading(true);
+    axios
+      .get(`${API.base_url}api/products`)
+      .then(res => {
+        setLoading(false);
+        const array = res.data.data.data;
+        console.log(array);
+        if (Array.isArray(array)) {
+          setData(array);
+        }
+      })
+      .catch(err => {
+        setLoading(false);
+        showMessage({
+          message: err.message,
+        });
+      });
+  };
   return (
     <>
       <Text style={styles.title}>For You</Text>
       <Gap height={14} />
       <View style={styles.container}>
-        <ItemProduct />
-        <Gap height={30} />
-        <ItemProduct />
-        <Gap height={30} />
-        <ItemProduct />
-        <Gap height={30} />
-        <ItemProduct />
-        <Gap height={30} />
-        <ItemProduct />
-        <Gap height={30} />
+        {data.map((item, index) => {
+          if (item.categories_id === 3) {
+            return (
+              <>
+                <ItemProduct
+                  key={item.id.toString()}
+                  title={item.name}
+                  category={item.category.name}
+                  price={item.price}
+                  image={{uri: item.galleries[0].url}}
+                  onPress={() => navigation.navigate('DetailProduct', {item})}
+                />
+                <Gap height={30} />
+              </>
+            );
+          }
+        })}
       </View>
     </>
   );
 };
 const Hiking = ({onPress}) => {
+  const navigation = useNavigation();
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    getAllShoes();
+  }, []);
+
+  const getAllShoes = () => {
+    setLoading(true);
+    axios
+      .get(`${API.base_url}api/products`)
+      .then(res => {
+        setLoading(false);
+        const array = res.data.data.data;
+        console.log(array);
+        if (Array.isArray(array)) {
+          setData(array);
+        }
+      })
+      .catch(err => {
+        setLoading(false);
+        showMessage({
+          message: err.message,
+        });
+      });
+  };
   return (
     <>
       <Text style={styles.title}>For You</Text>
       <Gap height={14} />
       <View style={styles.container}>
-        <ItemProduct onPress={onPress} />
-        <Gap height={30} />
-        <ItemProduct />
-        <Gap height={30} />
-        <ItemProduct />
-        <Gap height={30} />
-        <ItemProduct />
-        <Gap height={30} />
-        <ItemProduct />
-        <Gap height={30} />
+        {data.map((item, index) => {
+          if (item.categories_id === 2) {
+            return (
+              <>
+                <ItemProduct
+                  key={item.id.toString()}
+                  title={item.name}
+                  category={item.category.name}
+                  price={item.price}
+                  image={{uri: item.galleries[0].url}}
+                  onPress={() => navigation.navigate('DetailProduct', {item})}
+                />
+                <Gap height={30} />
+              </>
+            );
+          }
+        })}
       </View>
     </>
   );
 };
 
 const Home = ({navigation}) => {
-  const route = useRoute();
-  const {token} = route.params;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [user, setUser] = useState({});
 
   useEffect(() => {
-    Users.Users.filter(item => {
-      if (item.token === token) {
-        setUser(item);
-      }
+    getData('userProfile').then(res => {
+      setUser(res.user);
     });
   }, []);
-
-  console.log(user);
 
   const renderData = () => {
     switch (currentIndex) {
       case 0:
-        return (
-          <AllShoes onPress={() => navigation.navigate('DetailProduct')} />
-        );
+        return <AllShoes />;
       case 1:
         return <Running onPress={() => navigation.navigate('DetailProduct')} />;
       case 2:
@@ -193,11 +360,15 @@ const Home = ({navigation}) => {
         showsVerticalScrollIndicator={false}>
         <Gap height={20} />
         <View style={styles.container}>
-          <Header title={`Halo, ${user.fullname}`} desc={`@${user.username}`}>
-            {user.profile === '' ? (
+          <Header title={`Halo, ${user.name}`} desc={`@${user.username}`}>
+            {/* <DmProfile /> */}
+            {user.profile_photo_url === null ? (
               <DmProfile />
             ) : (
-              <Image source={{uri: user.profile}} style={styles.profile} />
+              <Image
+                source={{uri: user.profile_photo_url}}
+                style={styles.profile}
+              />
             )}
           </Header>
         </View>

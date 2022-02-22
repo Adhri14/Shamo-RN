@@ -2,16 +2,16 @@ import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {Shoes1} from '../assets';
 
-const ItemProduct = ({onPress}) => {
+const ItemProduct = ({onPress, image, title, category, price}) => {
   return (
     <Pressable onPress={onPress} style={styles.button}>
       <View style={styles.content}>
-        <Image source={Shoes1} style={styles.image} />
+        <Image source={image} style={styles.image} />
       </View>
       <View>
-        <Text style={styles.category}>Football</Text>
-        <Text style={styles.title}>Predator 20.3 Firm Ground</Text>
-        <Text style={styles.price}>$68,47</Text>
+        <Text style={styles.category}>{category}</Text>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.price}>${price}</Text>
       </View>
     </Pressable>
   );

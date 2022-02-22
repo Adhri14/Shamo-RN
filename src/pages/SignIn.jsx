@@ -14,27 +14,59 @@ import Gap from '../components/Gap';
 import {IconEmail, IconPassword} from '../assets';
 import Button from '../components/Button';
 import Users from '../model/User.json';
+import showMessage from '../utils/showMessage';
+import axios from 'axios';
+import {API} from '../config/index';
+import {storeData} from '../utils/localstorage';
+
+const initialData = {
+  email: '',
+  password: '',
+};
 
 const SignIn = ({navigation}) => {
-  const [form, setForm] = useState({
-    email: '',
-    password: '',
-  });
-  const [showAlert, setShowAlert] = useState(false);
+  const [form, setForm] = useState(initialData);
+  const [loading, setLoading] = useState(false);
+
   const onSubmit = () => {
-    Users.Users.map(item => {
-      if (item.email === form.email && item.password === form.password) {
-        navigation.replace('MainApp', {
-          screen: 'Home',
-          params: {
-            token: item.email === form.email ? item.token : '',
-          },
+    setLoading(true);
+    if (form.email === '') {
+      setLoading(false);
+      showMessage({
+        message: 'Email is required',
+      });
+    } else if (form.password === '') {
+      setLoading(false);
+      showMessage({
+        message: 'Password is required',
+      });
+    } else {
+      axios
+        .post(`${API.base_url}api/login`, form)
+        .then(res => {
+          setLoading(false);
+          storeData('userProfile', {user: res.data.data.user});
+          showMessage({
+            message: res.data?.meta?.message,
+            type: 'success',
+          });
+          setForm(initialData);
+          const type_token = res.data.data.token_type;
+          const access_token = res.data.data.access_token;
+          storeData('token', {token: `${type_token} ${access_token}`});
+          setTimeout(() => {
+            navigation.replace('MainApp');
+          }, 2000);
+        })
+        .catch(err => {
+          setLoading(false);
+          showMessage({
+            message: err.message,
+          });
         });
-      } else {
-        setShowAlert(true);
-      }
-    });
+    }
   };
+
   return (
     <SafeAreaView style={styles.page}>
       <StatusBar barStyle="light-content" backgroundColor="#1F1D2B" />
@@ -44,18 +76,6 @@ const SignIn = ({navigation}) => {
         <View style={styles.container}>
           <Header title="Login" desc="Sign In to Countinue" />
           <Gap height={70} />
-          {showAlert && (
-            <View style={styles.alert}>
-              <Text style={styles.textAlert}>
-                Email tidak terdaftar dalam database
-              </Text>
-              <Text
-                onPress={() => setShowAlert(!showAlert)}
-                style={styles.buttonClose}>
-                X
-              </Text>
-            </View>
-          )}
           <TextInputCustom
             placeholder="Your Email Address"
             value={form.email}
@@ -74,7 +94,11 @@ const SignIn = ({navigation}) => {
             <IconPassword />
           </TextInputCustom>
           <Gap height={30} />
-          <Button title="Sign In" onPress={onSubmit} />
+          <Button
+            disable={loading ? true : false}
+            title="Sign In"
+            onPress={onSubmit}
+          />
           <Text style={styles.link}>
             Don't have an account?{' '}
             <Text

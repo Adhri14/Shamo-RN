@@ -1,11 +1,18 @@
 import {StatusBar, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect} from 'react';
 import {IconShamo} from '../assets';
+import {getData} from '../utils/localstorage';
 
 const SplashScreen = ({navigation}) => {
   useEffect(() => {
     setTimeout(() => {
-      navigation.replace('SignIn');
+      getData('token').then(res => {
+        if (res) {
+          navigation.replace('MainApp');
+        } else {
+          navigation.replace('SignIn');
+        }
+      });
     }, 3000);
   }, []);
   return (

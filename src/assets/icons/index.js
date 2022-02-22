@@ -32,8 +32,10 @@ import IconChecklist from './icon-checklist.svg';
 import IconLiveChat from './ChatIcon.svg';
 import IconCartBlack from './CartIcon.svg';
 import IconBackBlack from './icon-back-black.svg';
+import IconPhone from './NoHpIcon.svg';
 
 export {
+  IconPhone,
   IconBackBlack,
   IconCartBlack,
   IconLiveChat,

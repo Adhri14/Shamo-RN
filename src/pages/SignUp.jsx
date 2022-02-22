@@ -6,14 +6,93 @@ import {
   Text,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import Header from '../components/Header';
 import Gap from '../components/Gap';
 import TextInputCustom from '../components/TextInput';
 import Button from '../components/Button';
-import {IconEmail, IconFullName, IconPassword, IconUsername} from '../assets';
+import {
+  IconEmail,
+  IconFullName,
+  IconPassword,
+  IconPhone,
+  IconUsername,
+} from '../assets';
+import axios from 'axios';
+import {API} from '../config';
+import showMessage from '../utils/showMessage';
+import {storeData} from '../utils/localstorage';
+
+const initialData = {
+  name: '',
+  email: '',
+  username: '',
+  password: '',
+  phone: '',
+};
 
 const SignUp = ({navigation}) => {
+  const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState(initialData);
+
+  const onSubmit = () => {
+    // navigation.replace('MainApp');
+    setLoading(true);
+    if (form.name === '') {
+      setLoading(false);
+      showMessage({
+        message: 'Name is required',
+      });
+    } else if (form.username === '') {
+      setLoading(false);
+      showMessage({
+        message: 'Username is required',
+      });
+    } else if (form.email === '') {
+      setLoading(false);
+      showMessage({
+        message: 'Email is required',
+      });
+    } else if (form.phone === '') {
+      setLoading(false);
+      showMessage({
+        message: 'Phone number is required',
+      });
+    } else if (form.password === '') {
+      setLoading(false);
+      showMessage({
+        message: 'Password is required',
+      });
+    } else {
+      axios
+        .post(`${API.base_url}api/register`, form)
+        .then(res => {
+          console.log(res.data.data);
+          setLoading(false);
+          setForm(initialData);
+          showMessage({
+            message: res.data?.meta?.message,
+            type: 'success',
+          });
+          const type_token = res.data.data.token_type;
+          const access_token = res.data.data.access_token;
+          storeData('userProfile', {user: res.data.data.user});
+          storeData('token', {token: `${type_token} ${access_token}`});
+          setTimeout(() => {
+            navigation.replace('MainApp');
+          }, 2000);
+        })
+        .catch(err => {
+          setForm(initialData);
+          setLoading(false);
+          showMessage({
+            message: err.message,
+            type: 'success',
+          });
+        });
+    }
+  };
+
   return (
     <SafeAreaView style={styles.page}>
       <StatusBar barStyle="light-content" backgroundColor="#1F1D2B" />
@@ -27,6 +106,8 @@ const SignUp = ({navigation}) => {
             placeholder="Your Full Name"
             label="Full Name"
             autoCapitalize="words"
+            value={form.name}
+            onChangeText={val => setForm({...form, name: val})}
             keyboardType="default">
             <IconFullName />
           </TextInputCustom>
@@ -34,6 +115,8 @@ const SignUp = ({navigation}) => {
           <TextInputCustom
             placeholder="Your Username"
             label="Username"
+            value={form.username}
+            onChangeText={val => setForm({...form, username: val})}
             keyboardType="default">
             <IconUsername />
           </TextInputCustom>
@@ -41,20 +124,34 @@ const SignUp = ({navigation}) => {
           <TextInputCustom
             placeholder="Your Email Address"
             label="Email Address"
+            value={form.email}
+            onChangeText={val => setForm({...form, email: val})}
             keyboardType="email-address">
             <IconEmail />
           </TextInputCustom>
           <Gap height={20} />
           <TextInputCustom
+            placeholder="Your Phone Number"
+            label="Phone Number"
+            value={form.phone}
+            onChangeText={val => setForm({...form, phone: val})}
+            keyboardType="phone-pad">
+            <IconPhone />
+          </TextInputCustom>
+          <Gap height={20} />
+          <TextInputCustom
             placeholder="Your Password"
             label="Password"
+            value={form.password}
+            onChangeText={val => setForm({...form, password: val})}
             isPassword>
             <IconPassword />
           </TextInputCustom>
           <Gap height={30} />
           <Button
+            disable={loading ? true : false}
             title="Sign Up"
-            onPress={() => navigation.replace('MainApp')}
+            onPress={onSubmit}
           />
           <Text style={styles.link}>
             Already have an account?{' '}
