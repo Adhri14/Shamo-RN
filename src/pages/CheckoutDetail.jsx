@@ -45,7 +45,9 @@ const CheckoutDetail = ({navigation}) => {
                     <Text style={styles.subtitlePin}>Adidas Core</Text>
                   </View>
                 </View>
-                <IconLine style={styles.line} />
+                <View style={styles.lineHorizontal}>
+                  <IconLine />
+                </View>
                 <View style={styles.rowPin}>
                   <View style={styles.circle}>
                     <IconLocation />
@@ -133,8 +135,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: 12,
   },
-  line: {
-    left: 20,
+  lineHorizontal: {
+    width: 40,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   titlePin: {
     fontSize: 12,

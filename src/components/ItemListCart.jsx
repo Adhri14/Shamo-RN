@@ -25,7 +25,7 @@ const ItemListCart = ({
       <View style={styles.container}>
         <View style={styles.row}>
           <View style={styles.content}>
-            <Image source={Shoes4} style={styles.image} />
+            <Image source={img} style={styles.image} />
             <View style={styles.wrapper}>
               <Text style={styles.title}>{title}</Text>
               <Text style={styles.price}>{price}</Text>
@@ -43,11 +43,12 @@ const ItemListCart = ({
       </View>
     );
   }
+
   return (
     <View style={styles.container}>
       <View style={styles.row}>
         <View style={styles.content}>
-          <Image source={Shoes4} style={styles.image} />
+          <Image source={img} style={[styles.image, {borderRadius: 10}]} />
           <View style={styles.wrapper}>
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.price}>{price}</Text>

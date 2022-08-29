@@ -1,5 +1,5 @@
 import {ScrollView, StatusBar, StyleSheet, Text, View} from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import HeaderProfile from '../components/HeaderProfile';
 import ListButtonProfile from '../components/ListButtonProfile';
 import Gap from '../components/Gap';
@@ -7,15 +7,33 @@ import {getData, removeValue} from '../utils/localstorage';
 import axios from 'axios';
 import {API} from '../config';
 import showMessage from '../utils/showMessage';
+import {useFocusEffect} from '@react-navigation/native';
 
 const Profile = ({navigation}) => {
   const [user, setUser] = useState({});
 
-  useEffect(() => {
-    getData('userProfile').then(res => {
-      setUser(res.user);
-    });
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getData('userProfile').then(res => {
+        setUser(res.user);
+      });
+      // getData('token').then(res => {
+      //   // setToken(res.token);
+      //   axios
+      //     .get(`${API.base_url}api/user`, {
+      //       headers: {Authorization: res.token},
+      //     })
+      //     .then(result => {
+      //       setUser(result.data.data);
+      //     })
+      //     .catch(err => {
+      //       showMessage({
+      //         message: err.message,
+      //       });
+      //     });
+      // });
+    }, []),
+  );
 
   const signOut = () => {
     getData('token').then(token => {

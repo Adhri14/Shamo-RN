@@ -1,8 +1,24 @@
 import {StyleSheet, Text, TextInput, View} from 'react-native';
 import React, {useState} from 'react';
 
-const TextInputUnderline = ({value, onChangeText, placeholder, label}) => {
+const TextInputUnderline = ({
+  value,
+  onChangeText,
+  placeholder,
+  label,
+  disable,
+}) => {
   const [isFocus, setIsFocus] = useState('#999');
+  if (disable) {
+    return (
+      <View>
+        <Text style={styles.title}>{label}</Text>
+        <View style={[styles.input, {borderBottomColor: isFocus}]}>
+          <Text style={[styles.input, {color: '#777'}]}>{value}</Text>
+        </View>
+      </View>
+    );
+  }
   return (
     <View>
       <Text style={styles.title}>{label}</Text>

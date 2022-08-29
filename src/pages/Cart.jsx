@@ -5,15 +5,17 @@ import {
   StyleSheet,
   Text,
   View,
+  ScrollView,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import HeaderBack from '../components/HeaderBack';
 import {IconCartEmpty, IconNext} from '../assets';
 import Gap from '../components/Gap';
 import Button from '../components/Button';
 import ItemListCart from '../components/ItemListCart';
+import {useSelector} from 'react-redux';
 
-const EmptyState = () => {
+const EmptyState = ({onPress}) => {
   return (
     <View style={styles.content}>
       <IconCartEmpty />
@@ -23,13 +25,26 @@ const EmptyState = () => {
       <Text style={styles.text}>Let's find your favorite shoes</Text>
       <Gap height={20} />
       <View style={{width: 152}}>
-        <Button type="btn-sm" title="Explore Store" />
+        <Button type="btn-sm" title="Explore Store" onPress={onPress} />
       </View>
     </View>
   );
 };
 
 const Cart = ({navigation}) => {
+  let {cartReducer} = useSelector(state => state);
+
+  console.log('data : ', cartReducer);
+
+  const quantity = (index, item) => {
+    let _quantity = [...cartReducer.cart];
+    return (_quantity[index].quantity = item.quantity);
+  };
+
+  const onPressAdd = item => {
+    item.quantity += 1;
+  };
+
   return (
     <View style={styles.page}>
       <StatusBar
@@ -40,26 +55,44 @@ const Cart = ({navigation}) => {
       <HeaderBack title="Cart" onPress={() => navigation.goBack()} />
       <View style={styles.container}>
         {/* <EmptyState /> */}
-        <View style={{flex: 1}}>
-          <Gap height={33} />
-          <ItemListCart title="Terrex Urban Low" price="$143,98" qty={2} />
-          <ItemListCart title="Terrex Urban Low" price="$143,98" qty={2} />
-          <ItemListCart title="Terrex Urban Low" price="$143,98" qty={2} />
-          <View style={styles.position}>
-            <View style={styles.row}>
-              <Text style={styles.title}>Subtotal</Text>
-              <Text style={styles.total}>$287,96</Text>
+        {cartReducer.cart.length > 0 ? (
+          <>
+            <View style={{flex: 1}}>
+              <Gap height={33} />
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{flexGrow: 1}}>
+                {cartReducer.cart?.map((item, index) => (
+                  <ItemListCart
+                    key={`${item.id}->${index}`}
+                    title={item.title}
+                    price={`${item.price}`}
+                    img={{uri: item.image}}
+                    qty={`${quantity(index, item)}`}
+                    onPressAdd={() => onPressAdd(item)}
+                    onPressMin={() => onPressMin(item)}
+                  />
+                ))}
+              </ScrollView>
             </View>
-            <View style={styles.wrapperButton}>
-              <Pressable
-                onPress={() => navigation.navigate('CheckoutDetail')}
-                style={styles.buttonNext}>
-                <Text style={styles.textButton}>Continue to Checkout</Text>
-                <IconNext />
-              </Pressable>
+            <View>
+              <View style={styles.row}>
+                <Text style={styles.title}>Subtotal</Text>
+                <Text style={styles.total}>$287,96</Text>
+              </View>
+              <View style={styles.wrapperButton}>
+                <Pressable
+                  onPress={() => navigation.navigate('CheckoutDetail')}
+                  style={styles.buttonNext}>
+                  <Text style={styles.textButton}>Continue to Checkout</Text>
+                  <IconNext />
+                </Pressable>
+              </View>
             </View>
-          </View>
-        </View>
+          </>
+        ) : (
+          <EmptyState onPress={() => navigation.replace('MainApp')} />
+        )}
       </View>
     </View>
   );

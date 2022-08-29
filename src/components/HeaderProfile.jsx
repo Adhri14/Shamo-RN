@@ -8,8 +8,15 @@ const HeaderProfile = ({onPress, title, desc}) => {
       <View style={styles.row}>
         {/* <Image source={DmProfile} */}
         <DmProfile />
-        <View style={{marginLeft: 16}}>
-          <Text style={styles.title}>Halo, {title}</Text>
+        <View
+          style={{
+            marginLeft: 16,
+            flex: 1,
+            paddingRight: 20,
+          }}>
+          <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
+            Halo, {title}
+          </Text>
           <Text style={styles.desc}>{desc}</Text>
         </View>
       </View>
@@ -30,7 +37,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#1F1D2B',
+    // backgroundColor: '#1F1D2B',
     padding: 30,
     paddingTop: 50,
   },
@@ -54,5 +61,6 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
+    flex: 1,
   },
 });

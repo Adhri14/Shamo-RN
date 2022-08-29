@@ -33,8 +33,12 @@ import IconLiveChat from './ChatIcon.svg';
 import IconCartBlack from './CartIcon.svg';
 import IconBackBlack from './icon-back-black.svg';
 import IconPhone from './NoHpIcon.svg';
+import IconCheck from './icon-check-big.svg';
+import IconCloseX from './Close.svg';
 
 export {
+  IconCheck,
+  IconCloseX,
   IconPhone,
   IconBackBlack,
   IconCartBlack,

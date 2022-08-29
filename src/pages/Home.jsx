@@ -8,19 +8,20 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import Header from '../components/Header';
 import {DmProfile, Shoes1, Shoes2, Shoes3} from '../assets';
 import Gap from '../components/Gap';
 import Card from '../components/Card';
 import Category, {titleCategory} from '../components/Category';
 import ItemProduct from '../components/ItemProduct';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import Users from '../model/User.json';
 import {getData} from '../utils/localstorage';
 import axios from 'axios';
 import {API} from '../config';
 import showMessage from '../utils/showMessage';
+import { useSelector } from 'react-redux';
 
 const AllShoes = ({children}) => {
   const navigation = useNavigation();
@@ -324,11 +325,13 @@ const Home = ({navigation}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [user, setUser] = useState({});
 
-  useEffect(() => {
-    getData('userProfile').then(res => {
-      setUser(res.user);
-    });
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getData('userProfile').then(res => {
+        setUser(res.user);
+      });
+    }, []),
+  );
 
   const renderData = () => {
     switch (currentIndex) {
@@ -354,7 +357,11 @@ const Home = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.page}>
-      <StatusBar barStyle="light-content" backgroundColor="#1F1D2B" />
+      <StatusBar
+        translucent
+        backgroundColor="transparent"
+        barStyle="light-content"
+      />
       <ScrollView
         contentContainerStyle={styles.scroll}
         showsVerticalScrollIndicator={false}>

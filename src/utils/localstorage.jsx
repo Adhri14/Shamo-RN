@@ -4,7 +4,7 @@ import showMessage from './showMessage';
 export const storeData = async (key, value) => {
   try {
     const jsonValue = JSON.stringify(value);
-    await AsyncStorage.setItem(key, jsonValue);
+    return await AsyncStorage.setItem(key, jsonValue);
   } catch (e) {
     // saving error
     showMessage({
