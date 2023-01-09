@@ -1,21 +1,16 @@
 const initCart = {
-  cart: [],
+    cart: [],
 };
 
 export const cartReducer = (state = initCart, action) => {
-  switch (action.type) {
-    case 'ADD_TO_CART':
-      return {
-        ...state,
-        cart: [...state.cart, action.value],
-      };
-    // case 'UPDATE_QTY':
-    //   const findId = state.cart.find(item => item.id === action.payload?.id);
-    //   if (findId) {
-
-    //   }
-
-    default:
-      return state;
-  }
+    if (action.type === 'ADD_TO_CART') {
+        return {
+            ...state,
+            cart: action.value,
+        };
+    }
+    if (action.type === 'CLEAR_CART') {
+        return initCart;
+    }
+    return state;
 };
