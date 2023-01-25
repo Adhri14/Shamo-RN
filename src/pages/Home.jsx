@@ -484,4 +484,11 @@ const styles = StyleSheet.create({
         height: 50,
         borderRadius: 30,
     },
+    coba: {
+        width: 20,
+        height: 30,
+        backgroundColor: "red",
+        marginHorizontal: 20,
+        paddingHorizontal: 20,
+    }
 });
