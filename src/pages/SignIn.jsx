@@ -4,7 +4,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  ToastAndroid,
   View,
 } from 'react-native';
 import React, {useState} from 'react';

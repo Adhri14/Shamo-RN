@@ -27,7 +27,7 @@ const EmptyState = ({onPress}) => {
             <Text style={styles.text}>Let's find your favorite shoes</Text>
             <Gap height={20} />
             <View style={{width: 152}}>
-                <Button type="btn-sm" title="Explore Store" onPress={onPress} />
+                <Button type="btn-sm" title="Explore Adhri" onPress={onPress} />
             </View>
         </View>
     );

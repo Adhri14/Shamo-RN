@@ -10,18 +10,16 @@ import {
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import Header from '../components/Header';
-import {DmProfile, Shoes1, Shoes2, Shoes3} from '../assets';
+import {DmProfile} from '../assets';
 import Gap from '../components/Gap';
 import Card from '../components/Card';
 import Category, {titleCategory} from '../components/Category';
 import ItemProduct from '../components/ItemProduct';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import Users from '../model/User.json';
 import {getData} from '../utils/localstorage';
 import axios from 'axios';
 import {API} from '../config';
 import showMessage from '../utils/showMessage';
-import {useSelector} from 'react-redux';
 
 const AllShoes = ({children}) => {
     const navigation = useNavigation();
@@ -66,7 +64,7 @@ const AllShoes = ({children}) => {
                                     img={{uri: item.galleries[0].url}}
                                     title={item.name}
                                     category={item.category.name}
-                                    price="$58,67"
+                                    price={`$${item.price}`}
                                     onPress={() =>
                                         navigation.navigate('DetailProduct', {
                                             item,
@@ -263,7 +261,7 @@ const Basketball = ({onPress}) => {
                         return (
                             <>
                                 <ItemProduct
-                                    key={item.id.toString()}
+                                    key={item.id.toString() + index}
                                     title={item.name}
                                     category={item.category.name}
                                     price={item.price}
@@ -320,7 +318,7 @@ const Hiking = ({onPress}) => {
                         return (
                             <>
                                 <ItemProduct
-                                    key={item.id.toString()}
+                                    key={item.id.toString() + index}
                                     title={item.name}
                                     category={item.category.name}
                                     price={item.price}
@@ -397,7 +395,7 @@ const Home = ({navigation}) => {
             <ScrollView
                 contentContainerStyle={styles.scroll}
                 showsVerticalScrollIndicator={false}>
-                <Gap height={20} />
+                <Gap height={Platform.OS === 'ios' ? 20 : 50} />
                 <View style={styles.container}>
                     <Header
                         title={`Halo, ${user.name}`}

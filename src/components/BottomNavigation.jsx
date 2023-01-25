@@ -67,7 +67,8 @@ export default function BottomNavigation({state, descriptors, navigation}) {
 
         return (
           <TabItem
-            key={index}
+
+		key={index}
             onPress={onPress}
             onLongPress={onLongPress}
             isFocused={isFocused}
